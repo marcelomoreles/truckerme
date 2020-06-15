@@ -1,33 +1,35 @@
 import { Component, ElementRef, Inject, ViewChild, AfterViewInit } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
-import { Platform } from '@ionic/angular';
+import { Platform, LoadingController } from '@ionic/angular';
 import { DOCUMENT} from '@angular/common';
 
 import { darkStyle } from './map-dark-style';
 
 @Component({
-  selector: 'page-map',
-  templateUrl: 'map.html',
-  styleUrls: ['./map.scss']
+  selector: "page-map",
+  templateUrl: "map.html",
+  styleUrls: ["./map.scss"],
 })
 export class MapPage implements AfterViewInit {
-  @ViewChild('mapCanvas', { static: true }) mapElement: ElementRef;
+  @ViewChild("mapCanvas", { static: true }) mapElement: ElementRef;
 
   constructor(
     @Inject(DOCUMENT) private doc: Document,
     public confData: ConferenceData,
-    public platform: Platform) {}
+    public platform: Platform,
+    public loadingCtrl: LoadingController
+  ) {}
 
   async ngAfterViewInit() {
-    const appEl = this.doc.querySelector('ion-app');
+    const appEl = this.doc.querySelector("ion-app");
     let isDark = false;
     let style = [];
-    if (appEl.classList.contains('dark-theme')) {
+    if (appEl.classList.contains("dark-theme")) {
       style = darkStyle;
     }
 
     const googleMaps = await getGoogleMaps(
-      'AIzaSyCDoTvpD-Xq8GOszpnyI35DW9DZRBaKV-o'
+      "AIzaSyCDoTvpD-Xq8GOszpnyI35DW9DZRBaKV-o"
     );
 
     let map;
@@ -38,47 +40,57 @@ export class MapPage implements AfterViewInit {
       map = new googleMaps.Map(mapEle, {
         center: mapData.find((d: any) => d.center),
         zoom: 16,
-        styles: style
+        styles: style,
       });
 
       mapData.forEach((markerData: any) => {
         const infoWindow = new googleMaps.InfoWindow({
-          content: `<h5>${markerData.name}</h5>`
+          content: `<h5>${markerData.name}</h5>`,
         });
 
         const marker = new googleMaps.Marker({
           position: markerData,
           map,
-          title: markerData.name
+          title: markerData.name,
         });
 
-        marker.addListener('click', () => {
+        marker.addListener("click", () => {
           infoWindow.open(map, marker);
         });
       });
 
-      googleMaps.event.addListenerOnce(map, 'idle', () => {
-        mapEle.classList.add('show-map');
+      googleMaps.event.addListenerOnce(map, "idle", () => {
+        mapEle.classList.add("show-map");
       });
     });
 
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'class') {
+        if (mutation.attributeName === "class") {
           const el = mutation.target as HTMLElement;
-          isDark = el.classList.contains('dark-theme');
+          isDark = el.classList.contains("dark-theme");
           if (map && isDark) {
-            map.setOptions({styles: darkStyle});
+            map.setOptions({ styles: darkStyle });
           } else if (map) {
-            map.setOptions({styles: []});
+            map.setOptions({ styles: [] });
           }
         }
       });
     });
     observer.observe(appEl, {
-      attributes: true
+      attributes: true,
     });
   }
+
+    async shareSocial(network: string, fab: HTMLIonFabElement) {
+      const loading = await this.loadingCtrl.create({
+        message: `Posting to ${network}`,
+        duration: Math.random() * 1000 + 500,
+      });
+      await loading.present();
+      await loading.onWillDismiss();
+      fab.close();
+    }
 }
 
 function getGoogleMaps(apiKey: string): Promise<any> {

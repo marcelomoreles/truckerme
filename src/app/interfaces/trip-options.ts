@@ -1,17 +1,26 @@
+import * as firebase from 'firebase';
+
 export interface tripOptions {
-  type: string; // Tipo do frete -> Fracionado ou Dedicado
+  type?: string; // Tipo do frete -> Fracionado ou Dedicado
   locationStart: locationDetail; // Dados da saída
-  locationEnd: [ locationDetail ]; // Dados das múltiplas chegadas
+  locationEnd: locationDetail ;
+  // locationEnd: [ locationDetail ]; // Dados das múltiplas chegadas
   companyName: string;
-  cargoWeigth: string;
-  // driverCurrentLocation: geopoint;
-  status: tripStatus; // Status da viagem
+  cargoWeigth?: string;
+  description: string;
+  driverCurrentLocation: coords;
+  status?: tripStatus; // Status da viagem
 }
 
 export interface locationDetail {
   address: string;
-  // location: geopoint;
-  // dateTime: datetime;
+  location?: coords;
+  dateTime?: string;
+}
+
+export interface coords {
+  latitude: string;
+  longitude: string
 }
 
 enum tripStatus {

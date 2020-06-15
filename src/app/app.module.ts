@@ -13,6 +13,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { FormsModule } from '@angular/forms';
 
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 
 @NgModule({
@@ -23,6 +26,9 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
+    AngularFireModule.initializeApp(environment),
+    AngularFirestoreModule,
+    AngularFireAuthModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
     })

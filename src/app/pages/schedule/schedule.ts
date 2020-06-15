@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, IonList, IonRouterOutlet, LoadingController, ModalController, ToastController, Config } from '@ionic/angular';
 
-import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
+// import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 import { ConferenceData } from '../../providers/conference-data';
 import { UserData } from '../../providers/user-data';
 
@@ -43,6 +43,11 @@ export class SchedulePage implements OnInit {
     this.ios = this.config.get('mode') === 'ios';
   }
 
+  addTrip() {
+    console.log('Trip');
+    this.router.navigate(['add-trip']);
+  }
+  
   updateSchedule() {
     // Close any open sliding items when the schedule updates
     if (this.scheduleList) {
@@ -55,26 +60,26 @@ export class SchedulePage implements OnInit {
     });
   }
 
-  async presentFilter() {
-    const modal = await this.modalCtrl.create({
-      component: ScheduleFilterPage,
-      swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl,
-      componentProps: { excludedTracks: this.excludeTracks }
-    });
-    await modal.present();
+  // async presentFilter() {
+  //   const modal = await this.modalCtrl.create({
+  //     component: ScheduleFilterPage,
+  //     swipeToClose: true,
+  //     presentingElement: this.routerOutlet.nativeEl,
+  //     componentProps: { excludedTracks: this.excludeTracks }
+  //   });
+  //   await modal.present();
 
-    const { data } = await modal.onWillDismiss();
-    if (data) {
-      this.excludeTracks = data;
-      this.updateSchedule();
-    }
-  }
+  //   const { data } = await modal.onWillDismiss();
+  //   if (data) {
+  //     this.excludeTracks = data;
+  //     this.updateSchedule();
+  //   }
+  // }
 
   async addFavorite(slidingItem: HTMLIonItemSlidingElement, sessionData: any) {
     if (this.user.hasFavorite(sessionData.name)) {
       // Prompt to remove favorite
-      this.removeFavorite(slidingItem, sessionData, 'Favorite already added');
+      this.removeFavorite(slidingItem, sessionData, 'Já adicionado aos favoritos');
     } else {
       // Add as a favorite
       this.user.addFavorite(sessionData.name);
@@ -84,10 +89,10 @@ export class SchedulePage implements OnInit {
 
       // Create a toast
       const toast = await this.toastCtrl.create({
-        header: `${sessionData.name} was successfully added as a favorite.`,
+        header: `${sessionData.name} foi adicionada aos favoritos.`,
         duration: 3000,
         buttons: [{
-          text: 'Close',
+          text: 'Fechar',
           role: 'cancel'
         }]
       });
@@ -101,10 +106,10 @@ export class SchedulePage implements OnInit {
   async removeFavorite(slidingItem: HTMLIonItemSlidingElement, sessionData: any, title: string) {
     const alert = await this.alertCtrl.create({
       header: title,
-      message: 'Would you like to remove this session from your favorites?',
+      message: 'Gostaria de remover dos favoritos?',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           handler: () => {
             // they clicked the cancel button, do not remove the session
             // close the sliding item and hide the option buttons
@@ -112,7 +117,7 @@ export class SchedulePage implements OnInit {
           }
         },
         {
-          text: 'Remove',
+          text: 'Remover',
           handler: () => {
             // they want to remove this session from their favorites
             this.user.removeFavorite(sessionData.name);

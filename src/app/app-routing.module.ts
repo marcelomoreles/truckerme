@@ -5,7 +5,7 @@ import { CheckTutorial } from './providers/check-tutorial.service';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/tutorial',
+    redirectTo: '/login',
     pathMatch: 'full'
   },
   {
@@ -32,6 +32,10 @@ const routes: Routes = [
     path: 'tutorial',
     loadChildren: () => import('./pages/tutorial/tutorial.module').then(m => m.TutorialModule),
     canLoad: [CheckTutorial]
+  },
+  {
+    path: 'add-trip',
+    loadChildren: () => import('./pages/add-trip/add-trip.module').then( m => m.AddTripPageModule)
   }
 ];
 

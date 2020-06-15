@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Adicionar Viagem</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="padding" >
+<form #tripForm="ngForm" novalidate>
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating" color="primary">Descrição da viagem</ion-label>
+      <i class="icon ion-ios-telephone"></i>
+      <ion-input [(ngModel)]="tripOptions.description" name="description" type="text" #description="ngModel" spellcheck="false"
+        autocapitalize="off" required>
+      </ion-input>
+
+    </ion-item>
+
+    <ion-text color="danger">
+      <p [hidden]="description.valid || submitted == false" class="ion-padding-start">
+        A descrição do transporte é obrigatório
+      </p>
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating" color="primary">Empresa cliente</ion-label>
+      <ion-input [(ngModel)]="tripOptions.companyName" name="company" type="text" #company="ngModel"
+        required>
+      </ion-input>
+    </ion-item>
+
+    <ion-text color="danger">
+      <p [hidden]="company.valid || submitted == false" class="ion-padding-start">
+        Este campo é obrigatório
+      </p>
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating" color="primary">Local de partida</ion-label>
+      <ion-input [(ngModel)]="tripOptions.locationStart.address" name="locationStart" type="text" #locationStart="ngModel" required>
+      </ion-input>
+    </ion-item>
+
+    <ion-text color="danger">
+      <p [hidden]="locationStart.valid || submitted == false" class="ion-padding-start">
+        Este campo é obrigatório
+      </p>
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating" color="primary">Data/Hora da partida</ion-label>
+      <ion-input [(ngModel)]="tripOptions.locationStart.dateTime" name="dateTimeStart" type="text" #dateTimeStart="ngModel" required>
+      </ion-input>
+    </ion-item>
+    
+    <ion-text color="danger">
+      <p [hidden]="locationStart.valid || submitted == false" class="ion-padding-start">
+        Este campo é obrigatório
+      </p>
+    </ion-text>
+    
+    <ion-item>
+      <ion-label position="floating" color="primary">Local de destino</ion-label>
+      <ion-input [(ngModel)]="tripOptions.locationEnd.address" name="locationEnd" type="text" #locationEnd="ngModel" required>
+      </ion-input>
+    </ion-item>
+    
+    <ion-text color="danger">
+      <p [hidden]="locationEnd.valid || submitted == false" class="ion-padding-start">
+        Este campo é obrigatório
+      </p>
+    </ion-text>
+<!-- 
+    <ion-item>
+      <ion-label position="floating" color="primary">Data/Hora de chegada</ion-label>
+      <ion-input [(ngModel)]="tripOptions.locationEnd.dateTime" name="dateTimeEnd" type="text" #dateTimeEnd="ngModel"
+        required>
+      </ion-input>
+    </ion-item>
+
+    <ion-text color="danger">
+      <p [hidden]="dateTimeEnd.valid || submitted == false" class="ion-padding-start">
+        Este campo é obrigatório
+      </p>
+    </ion-text> -->
+    
+    
+
+    
+  </ion-list>
+
+  <ion-row class="ion-padding-top">
+    
+    <ion-col>
+      <ion-button (click)="cancel()" color="primary" fill="outline" expand="block">Cancelar</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button (click)="addTrip(tripForm)" color="success" type="submit" expand="block">Adicionar</ion-button>
+    </ion-col>
+  </ion-row>
+</form>
+
+</ion-content>
