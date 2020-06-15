@@ -9,5 +9,6 @@ Assim, conforme conversado do Rodrigo Terron, estou editando o readme pra que se
 
 Grato desde já e obrigado por nos proporcionarem esse evento, foi meu primeiro Hacka e certamente participarei dos próximos.
 
-Grande abraço
-@edipomaciel
+Grande abraço,
+
+_Time 113_
